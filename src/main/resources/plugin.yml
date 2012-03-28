@@ -1,0 +1,6 @@
+author: zhuowei
+description: Continuation of the SphereWorld plugin by ToasterKTN.
+main: net.zhuoweizhang.moresphereworld.MoreSphereWorldPlugin
+name: MoreSphereWorld
+startup: startup
+version: '1.0'
