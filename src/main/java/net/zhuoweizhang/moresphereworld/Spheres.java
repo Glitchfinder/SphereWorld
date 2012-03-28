@@ -1,4 +1,4 @@
-package com.bukkit.toasterktn.SphereWorld;
+package net.zhuoweizhang.moresphereworld;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,7 +14,7 @@ import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.util.Vector;
 
-import com.bukkit.toasterktn.SphereWorld.Config.SphereWorldConfig;
+import net.zhuoweizhang.moresphereworld.config.SphereWorldConfig;
 
 public class Spheres implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
@@ -22,7 +22,7 @@ public class Spheres implements java.io.Serializable {
     List<Sphere> thisspheres = new ArrayList<Sphere>();
     boolean debug = false;
 
-    public void WriteSphereList(File filename) {
+    public void writeSphereList(File filename) {
 	// Write to disk with FileOutputStream
 	FileOutputStream f_out;
 	try {
@@ -39,7 +39,7 @@ public class Spheres implements java.io.Serializable {
     }
 
     @SuppressWarnings("unchecked")
-    public void ReadSphereList(File filename, Server server) {
+    public void readSphereList(File filename, Server server) {
 	// Read from disk using FileInputStream
 	try {
 	    thisspheres.clear();
@@ -114,16 +114,16 @@ public class Spheres implements java.io.Serializable {
 		    }
 		}
 	    }
-	    WriteSphereList(filename);
+	    writeSphereList(filename);
 	}
 	System.out.println("Created / Loaded Spheres: " + thisspheres.size());
     }
 
-    public void AddSphereToList(Sphere sphere) {
+    public void addSphereToList(Sphere sphere) {
 	thisspheres.add(sphere);
     }
 
-    public List<Sphere> GetSphereList() {
+    public List<Sphere> getSphereList() {
 	return thisspheres;
     }
 

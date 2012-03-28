@@ -1,8 +1,8 @@
-package com.bukkit.toasterktn.SphereWorld;
+package net.zhuoweizhang.moresphereworld;
 
 import org.bukkit.util.Vector;
 
-public class Sphere  implements java.io.Serializable {
+public class Sphere implements java.io.Serializable {
 
     private static final long serialVersionUID = 1570149742281426141L;
     private String world;

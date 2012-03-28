@@ -1,25 +1,27 @@
-package com.bukkit.toasterktn.SphereWorld.Block;
+package net.zhuoweizhang.moresphereworld.block;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockFromToEvent;
-import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.util.Vector;
 
-import com.bukkit.toasterktn.SphereWorld.Sphere;
-import com.bukkit.toasterktn.SphereWorld.SphereWorld;
-import com.bukkit.toasterktn.SphereWorld.Config.SphereWorldConfig;
+import net.zhuoweizhang.moresphereworld.MoreSphereWorldPlugin;
+import net.zhuoweizhang.moresphereworld.Sphere;
+import net.zhuoweizhang.moresphereworld.config.SphereWorldConfig;
 
-public class SphereBlockListener extends BlockListener {
-    public static SphereWorld plugin;
+public class SphereBlockListener implements Listener {
+    public MoreSphereWorldPlugin plugin;
 
-    public SphereBlockListener(SphereWorld instance) {
+    public SphereBlockListener(MoreSphereWorldPlugin instance) {
 	plugin = instance;
     }
 
+    @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
 	// our block ?
 	if (event.isCancelled())
@@ -37,7 +39,7 @@ public class SphereBlockListener extends BlockListener {
 		    if (event.getBlock().getWorld().getName().equalsIgnoreCase(SphereWorldConfig.world)) {
 			// Check if it is in one of our Spheres
 			Block b = event.getBlock();
-			for (Sphere s : plugin.spheres.GetSphereList()) {
+			for (Sphere s : plugin.spheres.getSphereList()) {
 			    if (s.getX() > b.getX()
 				    - SphereWorldConfig.maxradius
 				    && s.getX() < b.getX()
@@ -71,6 +73,7 @@ public class SphereBlockListener extends BlockListener {
 	}
     }
 
+    @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
 	if (event.isCancelled())
 	    return;
@@ -82,14 +85,15 @@ public class SphereBlockListener extends BlockListener {
 	}
     }
 
+    @EventHandler
     public void onBlockPhysics(BlockPhysicsEvent event) {
 	if (event.isCancelled())
 	    return;
 	if (event.getBlock().getWorld().getName().equalsIgnoreCase(SphereWorldConfig.world)) {
-	    if (plugin.isGenerating) {
+	    /*if (plugin.isGenerating) {
 		event.setCancelled(true);
 		return;
-	    }
+	    }*/
 	    if (SphereWorldConfig.floorprotect) {
 		if (event.getBlock().getY() == 1) {
 		    event.setCancelled(true);
@@ -99,14 +103,15 @@ public class SphereBlockListener extends BlockListener {
 	}
     }
 
+    @EventHandler
     public void onBlockFromTo(BlockFromToEvent event) {
 	if (event.isCancelled())
 	    return;
 	if (event.getBlock().getWorld().getName().equalsIgnoreCase(SphereWorldConfig.world)) {
-	    if (plugin.isGenerating) {
+	    /*if (plugin.isGenerating) {
 		event.setCancelled(true);
 		return;
-	    }
+	    }*/
 	    if (SphereWorldConfig.floorprotect) {
 		if (event.getToBlock().getY() == 1) {
 		    event.setCancelled(true);
