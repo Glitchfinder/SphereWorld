@@ -2,5 +2,13 @@ author: zhuowei
 description: Continuation of the SphereWorld plugin by ToasterKTN.
 main: net.zhuoweizhang.moresphereworld.MoreSphereWorldPlugin
 name: MoreSphereWorld
-startup: startup
 version: '1.0'
+commands:
+    sphere:
+        description: displays information about the current sphere.
+        permission: moresphereworld.sphere
+permissions:
+    moresphereworld.sphere:
+        description: allows use of the /sphere command.
+        default: true
+
