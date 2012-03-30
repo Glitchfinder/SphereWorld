@@ -56,14 +56,15 @@ public class Spheres implements java.io.Serializable {
 		s.setV(new Vector(s.getX(), s.getY(), s.getZ()));
 	    }
 	} catch (Exception e) {
-	    System.out.print("First run lets generate the spheres");
+	    System.out.print("First run. Let's generate the spheres.");
 	    thisspheres.clear();
 	    // Now test if we make a new
 	    {
 		try {
-		    Sphere ns = new Sphere();
+		    /*Sphere ns = new Sphere();
 		    ns.setSize(SphereWorldConfig.maxradius);
 		    // set the Spawn.
+                     Move this to post world generation?
 		    server.getWorld(SphereWorldConfig.world).loadChunk(0,0);
 		    server.getWorld(SphereWorldConfig.world).setSpawnLocation(0,server.getWorld(SphereWorldConfig.world).getHighestBlockYAt(0,0),0);
 		    ns.setV(server.getWorld(SphereWorldConfig.world).getSpawnLocation().toVector());
@@ -75,13 +76,14 @@ public class Spheres implements java.io.Serializable {
 			    " x"+server.getWorld(SphereWorldConfig.world).getSpawnLocation().getX()+
 			    " y"+server.getWorld(SphereWorldConfig.world).getSpawnLocation().getY()+
 			    " z"+server.getWorld(SphereWorldConfig.world).getSpawnLocation().getZ());
+                    */
 		    System.out.println("Creating new Spheres... First run");
 		    System.out.print("working.. please wait.. this may take several minutes");
-		    thisspheres.add(ns);
+		    //thisspheres.add(ns);
 		} catch (Exception e1) {
 		    // Well seems like world is not default world.. so we cannot
 		    // get spawnpoint.
-		    System.out.print("World does not exist... This is not Good. Should not happen");
+		    //System.out.print("World does not exist... This is not Good. Should not happen");
 		    return;
 		}
 	    }

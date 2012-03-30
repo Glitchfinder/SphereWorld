@@ -35,7 +35,6 @@ public class SphereBlockPopulator extends BlockPopulator {
      */
 
     public void populate(World world, Random random, Chunk chunk) {
-        System.out.println("called on " + source.toString());
         int worldHeight = world.getMaxHeight();
         int chunkX = chunk.getX();
         int chunkZ = chunk.getZ();
@@ -57,7 +56,7 @@ public class SphereBlockPopulator extends BlockPopulator {
 		vt = new Vector((double) chunkX * 16 + 8 , (double) 64, (double) chunkZ * 16 + 8);
 		Collections.sort(ts.getSphereList(), COMPARATOR);
 	    }
-	    if (true || SphereWorldConfig.useglass || (SphereWorldConfig.userandomglass && (ts.getSphereList().get(0).getSize() % 2 == 1))) {
+	    if (SphereWorldConfig.useglass || (SphereWorldConfig.userandomglass && (ts.getSphereList().get(0).getSize() % 2 == 1))) {
 		    for (int z = 0; z < 16; ++z) {
 			for (int x = 0; x < 16; ++x) {
 			    for (int y = worldHeight - 1; y >= 2; --y) {
@@ -84,14 +83,14 @@ public class SphereBlockPopulator extends BlockPopulator {
 			   
 			}
 		    }
-	    }/* else if (SphereWorldConfig.usehalfglass || (SphereWorldConfig.userandomglass && (ts.getSphereList().get(0).getSize() % 2 == 0))) {
-		 for (int k = 0; k < 16; ++k) {
-			for (int l = 0; l < 16; ++l) {
-			    for (int k1 = 127; k1 >= 64; --k1) {
-				int l1 = (l * 16 + k) * 128 + k1;
+	    } else if (SphereWorldConfig.usehalfglass || (SphereWorldConfig.userandomglass && (ts.getSphereList().get(0).getSize() % 2 == 0))) {
+                    for (int z = 0; z < 16; ++z) {
+			for (int x = 0; x < 16; ++x) {
+			    for (int y = worldHeight - 1; y >= 64; --y) {
+				 Block block = chunk.getBlock(x, y, z);
 				 boolean keep = false;
 				 for (Sphere s : ts.getSphereList()) {
-				     if (s.getV().distance(new Vector((double) i * 16 + l, (double) k1, (double) j * 16 + k)) < s.getSize()) {
+				     if (s.getV().distance(new Vector((double) chunkX * 16 + x, (double) y, (double) chunkZ * 16 + z)) < s.getSize()) {
 					 keep = true;
 				     }
 				 }
@@ -100,24 +99,24 @@ public class SphereBlockPopulator extends BlockPopulator {
 			   
 			}
 		    }
-		 for (int k = 0; k < 16; ++k) {
-			for (int l = 0; l < 16; ++l) {
-			    for (int k1 = 64; k1 >= 2; --k1) {
-				int l1 = (l * 16 + k) * 128 + k1;
+		    for (int z = 0; z < 16; ++z) {
+			for (int x = 0; x < 16; ++x) {
+			    for (int y = 64; y >= 2; --y) {
+				 Block block = chunk.getBlock(x, y, z);
 				 boolean keep = false;
-				 for (Sphere s : ts.getSphereList()) {
-				     if (s.getV().distance(new Vector((double) i * 16 + l, (double) k1, (double) j * 16 + k)) < s.getSize()) {
+                                 for (Sphere s : ts.getSphereList()) {
+				     if (s.getV().distance(new Vector((double) chunkX * 16 + x, (double) y, (double) chunkZ * 16 + z)) < s.getSize()) {
 					 keep = true;
-					 if (s.getV().distance(new Vector((double) i * 16 + l, (double) k1, (double) j * 16 + k)) > s.getSize() - 1.1) {
-					     if (SphereWorldConfig.useglow) {
-						if (s.getX() == i* 16 + l || s.getZ() ==  j * 16 + k) {
-						    abyte[l1] = (byte) 89;
+					 if (s.getV().distance(new Vector((double) chunkX * 16 + x, (double) y, (double) chunkZ * 16 + z)) > s.getSize() - 1.1) {
+					    if (SphereWorldConfig.useglow) {
+						if (s.getX() == chunkX * 16 + x || s.getZ() ==  chunkZ * 16 + z) {
+						    block.setTypeIdAndData(89, (byte) 0, false);
 						} else {
-						    abyte[l1] = (byte) SphereWorldConfig.glassblock;
+						    block.setTypeIdAndData(SphereWorldConfig.glassblock, (byte) 0, false);
 					    	}
 					    } else {
-						abyte[l1] = (byte) SphereWorldConfig.glassblock;
-					    }		
+						block.setTypeIdAndData(SphereWorldConfig.glassblock, (byte) 0, false);
+					    }					     
 					 }
 				     }
 				 }
@@ -145,41 +144,29 @@ public class SphereBlockPopulator extends BlockPopulator {
 			}
 		}
 	    }	  
-	*/} else {
-            for (int x = 0; x < 16; x++) {
-                for (int z = 0; z < 16; z++) {
-                    for (int y = 0; y < worldHeight; y++) {
+	} else {
+            for (int x = 0; x < 16; ++x) {
+                for (int z = 0; z < 16; ++z) {
+                    for (int y = worldHeight - 1; y >= 2; --y) {
                         chunk.getBlock(x, y, z).setTypeIdAndData(0, (byte) 0, false);
                     }
                 }
             }
 	}
-	/*if (SphereWorldConfig.usefloor) {
-	 for (int k = 0; k < 16; ++k) {
-		for (int l = 0; l < 16; ++l) {
-		   int k1 = 1;
-		   	int l1 = (l * 16 + k) * 128 + k1;
-		   	if (!SphereWorldConfig.nowater) {
-		   	    abyte[l1] = (byte) 9; 
-		   	} else {
-		   	    abyte[l1] = (byte) 0; 
-		   	} 
-			k1 = 0;
-			l1 = (l * 16 + k) * 128 + k1;
-			abyte[l1] = (byte) 7;
+	if (SphereWorldConfig.usefloor) {
+            for (int x = 0; x < 16; ++x) {
+                for (int z = 0; z < 16; ++z) {
+                    chunk.getBlock(x, 1, z).setTypeIdAndData((SphereWorldConfig.nowater? 0 : 9), (byte) 0, false);
+                    chunk.getBlock(x, 0, z).setTypeIdAndData(7, (byte) 0, false);
 		}
 	    } 
 	} else{
-	    for (int k = 0; k < 16; ++k) {
-		for (int l = 0; l < 16; ++l) {
-		   int k1 = 1;
-		   	int l1 = (l * 16 + k) * 128 + k1;
-			abyte[l1] = (byte) 0x0;
-			k1 = 0;
-			l1 = (l * 16 + k) * 128 + k1;
-			abyte[l1] = (byte) 0x0;
+            for (int x = 0; x < 16; ++x) {
+                for (int z = 0; z < 16; ++z) {
+                    chunk.getBlock(x, 1, z).setTypeIdAndData(0, (byte) 0, false);
+                    chunk.getBlock(x, 0, z).setTypeIdAndData(0, (byte) 0, false);
 		}
-	    } 
-	}*/
+	    }
+	}
     }
 }
