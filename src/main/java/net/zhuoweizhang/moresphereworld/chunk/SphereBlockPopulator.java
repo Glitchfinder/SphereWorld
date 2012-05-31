@@ -35,7 +35,7 @@ public class SphereBlockPopulator extends BlockPopulator {
      */
 
     public void populate(World world, Random random, Chunk chunk) {
-        int worldHeight = world.getMaxHeight();
+        int worldHeight = 128; // not world.getMaxHeight() as terrain gen will never go above 128;
         int chunkX = chunk.getX();
         int chunkZ = chunk.getZ();
 

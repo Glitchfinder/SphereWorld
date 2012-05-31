@@ -25,4 +25,5 @@ nowater: true
 nofloorspawn: true
 autosavechunklist: true
 autosaveinterval: 30
+world-environment: 'NORMAL'
 

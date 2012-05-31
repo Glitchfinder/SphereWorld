@@ -1,5 +1,6 @@
 package net.zhuoweizhang.moresphereworld.config;
 
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class SphereWorldConfig {
@@ -20,7 +21,7 @@ public class SphereWorldConfig {
     public static boolean dobridges;
     public static boolean useglow;
     public static int bridgetype;
-    public static int worldseed;
+    public static long worldseed;
     public static int sphereseed;
     public static boolean otherworld;
     public static int glassblock;
@@ -31,6 +32,7 @@ public class SphereWorldConfig {
     public static boolean nofloorspawn;
     public static boolean autosavechunklist;
     public static int autosaveinterval;
+    public static World.Environment worldEnvironment;
     
     public static void initialize(FileConfiguration config) {
              world  = config.getString("world", "sphere");
@@ -47,7 +49,7 @@ public class SphereWorldConfig {
              minradius = config.getInt("minradius", 8);
              maxradius = config.getInt("maxradius", 32);
              worldsize = config.getInt("worldsize", 2000);
-             worldseed = config.getInt("worldseed", 12345);
+             worldseed = config.getLong("worldseed", 12345);
              sphereseed = config.getInt("sphereseed", 12345);
              spherechance = config.getInt("spherechance", 80);
              glassblock = config.getInt("glassblock", 20);
@@ -60,5 +62,6 @@ public class SphereWorldConfig {
              nofloorspawn = config.getBoolean("nofloorspawn", true);
              autosavechunklist = config.getBoolean("autosavechunklist", true);
              autosaveinterval = config.getInt("autosaveinterval", 30);
+             worldEnvironment = World.Environment.valueOf(config.getString("world-environment").toUpperCase());
         }
 }

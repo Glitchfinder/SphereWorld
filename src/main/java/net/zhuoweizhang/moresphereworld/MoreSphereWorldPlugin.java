@@ -72,7 +72,7 @@ public class MoreSphereWorldPlugin extends JavaPlugin {
         spherePopulator = new SphereBlockPopulator();
         spherePopulator.spheres = this.spheres;
 
-        getServer().createWorld(new WorldCreator(SphereWorldConfig.world));
+        getServer().createWorld(new WorldCreator(SphereWorldConfig.world).environment(SphereWorldConfig.worldEnvironment).seed(SphereWorldConfig.worldseed));
 
         blockListener = new SphereBlockListener(this);
 
