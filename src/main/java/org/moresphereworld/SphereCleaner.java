@@ -34,31 +34,34 @@ package org.moresphereworld;
 	import java.util.Random;
 //* IMPORTS: BUKKIT
 	import org.bukkit.block.Block;
-	import org.bukkit.Chunk;
+	import org.bukkit.craftbukkit.CraftWorld;
 	import org.bukkit.generator.BlockPopulator;
 	import org.bukkit.Location;
 	import org.bukkit.util.Vector;
-	import org.bukkit.World;
 //* IMPORTS: SPOUT
 	//* NOT NEEDED
 //* IMPORTS: OTHER
-	//* NOT NEEDED
+	import net.minecraft.server.Chunk;
+	import net.minecraft.server.ChunkSection;
+	import net.minecraft.server.World;
 
 public class SphereCleaner implements Runnable
 {
 	private MoreSphereWorldPlugin plugin;
 	private int taskID;
-	private World world;
+	private org.bukkit.World world;
+	private World defaultWorld;
 	private Random random = new Random(SphereWorldConfig.sphereSeed);
 
 	public ChunkQueue chunkQueue;
 	private Vector vector = null;
 
-	public SphereCleaner(MoreSphereWorldPlugin plugin, World world, ChunkQueue chunkQueue)
+	public SphereCleaner(MoreSphereWorldPlugin plugin, org.bukkit.World world, ChunkQueue chunkQueue)
 	{
 		this.plugin = plugin;
 		taskID = -1;
 		this.world = world;
+		this.defaultWorld = ((CraftWorld) world).getHandle();
 		this.chunkQueue = chunkQueue;
 		int chunkCount;
 	}
@@ -120,7 +123,21 @@ public class SphereCleaner implements Runnable
 			return;
 		}
 
-		final Chunk chunk = world.getChunkAt(chunkX, chunkZ);
+		final org.bukkit.Chunk chunk = world.getChunkAt(chunkX, chunkZ);
+
+		int chunkBlockX = chunkX * 16;
+		int chunkBlockZ = chunkZ * 16;
+
+		if (!defaultWorld.isLoaded(chunkBlockX, 0, chunkBlockZ))
+		{
+			plugin.chunkQueue.getChunkList().remove(chunkName);
+			stop();
+			start();
+			return;
+		}
+
+		Chunk defaultChunk = defaultWorld.getChunkAt(chunkX, chunkZ);
+		ChunkSection[] blockData = defaultChunk.h();
 
 		int seed = 0;
 		int height = 0;
@@ -209,34 +226,43 @@ public class SphereCleaner implements Runnable
 				for (int x = 0; x < 16; ++x)
 				{
 					for (int y = worldHeight - 1; y >= 0; --y)
-					{						
+					{	
 						if (!world.isChunkLoaded(chunk) && !world.loadChunk(chunkX, chunkZ, false))
 						{
 							plugin.chunkQueue.getChunkList().remove(chunkName);
 							return;
 						}
 
-						final Block block = chunk.getBlock(x, y, z);
+						final int sectionId = (y >> 4);
+
+						if (blockData[sectionId] == null)
+							blockData[sectionId] = new ChunkSection((sectionId) << 4);
+
+						final int currentBlockId = blockData[sectionId].a(x, y & 0xf, z);
 
 						if (y == 1 && !SphereWorldConfig.noFloorSpawn)
 						{
-							block.setTypeIdAndData(water, (byte) 0, false);
+							defaultChunk.f(x, y, z);
+							blockData[sectionId].a(x, y & 0xf, z, water);
 							continue;
 						}
 						else if (y == 0 && !SphereWorldConfig.noFloorSpawn)
 						{
-							block.setTypeIdAndData(7, (byte) 0, false);
+							defaultChunk.f(x, y, z);
+							blockData[sectionId].a(x, y & 0xf, z, 7);
 							continue;
 						}
 						else if (y <= 1)
 						{
-							block.setTypeIdAndData(0, (byte) 0, false);
+							defaultChunk.f(x, y, z);
+							blockData[sectionId].a(x, y & 0xf, z, 0);
 							continue;
 						}
 
 						if(!hassphere)
 						{
-							block.setTypeIdAndData(0, (byte) 0, false);
+							defaultChunk.f(x, y, z);
+							blockData[sectionId].a(x, y & 0xf, z, 0);
 							continue;
 						}
 
@@ -276,31 +302,36 @@ public class SphereCleaner implements Runnable
 							glass.add(true);
 						}
 
-						if (!keep && block.getTypeId() != 0 && glass.isEmpty())
+						if (!keep && currentBlockId != 0 && glass.isEmpty())
 						{
-							block.setTypeIdAndData(0, (byte) 0, false);
+							defaultChunk.f(x, y, z);
+							blockData[sectionId].a(x, y & 0xf, z, 0);
 							continue;
 						}
 						else if(!glass.isEmpty() && !glass.contains(false))
 						{
 							if (!SphereWorldConfig.useGlowstone)
 							{
-								block.setTypeIdAndData(SphereWorldConfig.glassBlockId, (byte) 0, false);
+								defaultChunk.f(x, y, z);
+								blockData[sectionId].a(x, y & 0xf, z, SphereWorldConfig.glassBlockId);
 								continue;
 							}
 
 							if (glowstone)
 							{
-								block.setTypeIdAndData(89, (byte) 0, false);
+								defaultChunk.f(x, y, z);
+								blockData[sectionId].a(x, y & 0xf, z, 89);
 								continue;
 							}
 
-							block.setTypeIdAndData(SphereWorldConfig.glassBlockId, (byte) 0, false);
+							defaultChunk.f(x, y, z);
+							blockData[sectionId].a(x, y & 0xf, z, SphereWorldConfig.glassBlockId);
 							continue;
 						}
-						if (!keep && block.getTypeId() != 0)
+						if (!keep && currentBlockId != 0)
 						{
-							block.setTypeIdAndData(0, (byte) 0, false);
+							defaultChunk.f(x, y, z);
+							blockData[sectionId].a(x, y & 0xf, z, 0);
 							continue;
 						}
 						else if (!keep)
@@ -312,6 +343,7 @@ public class SphereCleaner implements Runnable
 		catch(Exception e)
 		{
 			plugin.log.info("An error occurred while cleaning the chunk at " + chunkX + ", " + chunkZ + "." );
+			e.printStackTrace();
 			return;
 		}
 
@@ -321,6 +353,8 @@ public class SphereCleaner implements Runnable
 		}
 		catch(Exception e) {}
 
+		defaultChunk.a(blockData);
+		world.refreshChunk(chunkX, chunkZ);
 		world.unloadChunkRequest(chunkX, chunkZ, true);
 
 		if(SphereWorldConfig.verboseOutput)
