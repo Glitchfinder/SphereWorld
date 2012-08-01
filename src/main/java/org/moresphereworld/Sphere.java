@@ -42,6 +42,10 @@ public class Sphere implements Serializable
 	private double z;
 	private int size;
 	private transient Vector vector;
+	private boolean oreSphere;
+	private int oreId;
+	private int oreShellId;
+	private boolean protectedStructure;
 
 	public Sphere()
 	{
@@ -54,9 +58,19 @@ public class Sphere implements Serializable
 		return vector;
 	}
 
-	public void setVector(Vector vector)
+	public int getOreId()
 	{
-		this.vector = vector;
+		return oreId;
+	}
+
+	public int getOreShellId()
+	{
+		return oreShellId;
+	}
+
+	public int getSize()
+	{
+		return size;
 	}
 
 	public String getWorld()
@@ -64,14 +78,64 @@ public class Sphere implements Serializable
 		return world;
 	}
 
-	public void setWorld(String world)
-	{
-		this.world = world;
-	}
-
 	public double getX()
 	{
 		return x;
+	}
+
+	public double getY()
+	{
+		return y;
+	}
+
+	public double getZ()
+	{
+		return z;
+	}
+
+	public boolean isOreSphere()
+	{
+		return oreSphere;
+	}
+
+	public boolean isProtectedStructure()
+	{
+		return protectedStructure;
+	}
+
+	public void setOreSphere(boolean value)
+	{
+		this.oreSphere = value;
+	}
+
+	public void setOreId(int id)
+	{
+		this.oreId = id;
+	}
+
+	public void setOreShellId(int id)
+	{
+		this.oreShellId = id;
+	}
+
+	public void setProtectedStructure(boolean value)
+	{
+		this.protectedStructure = value;
+	}
+
+	public void setSize(int size)
+	{
+		this.size = size;
+	}
+
+	public void setVector(Vector vector)
+	{
+		this.vector = vector;
+	}
+
+	public void setWorld(String world)
+	{
+		this.world = world;
 	}
 
 	public void setX(double x)
@@ -80,35 +144,15 @@ public class Sphere implements Serializable
 		this.vector = new Vector(x, y, z);
 	}
 
-	public double getY()
-	{
-		return y;
-	}
-
 	public void setY(double y)
 	{
 		this.y = y;
 		this.vector = new Vector(x, y, z);
 	}
 
-	public double getZ()
-	{
-		return z;
-	}
-
 	public void setZ(double z)
 	{
 		this.z = z;
 		this.vector = new Vector(x, y, z);
-	}
-
-	public int getSize()
-	{
-		return size;
-	}
-
-	public void setSize(int size)
-	{
-		this.size = size;
 	}
 }

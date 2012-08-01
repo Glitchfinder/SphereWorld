@@ -28,18 +28,14 @@ package org.moresphereworld;
 	import java.lang.String;
 //* IMPORTS: BUKKIT
 	import org.bukkit.Chunk;
-	import org.bukkit.event.block.BlockBreakEvent;
-	import org.bukkit.event.block.BlockFormEvent;
-	import org.bukkit.event.block.BlockFromToEvent;
-	import org.bukkit.event.block.BlockPhysicsEvent;
-	import org.bukkit.event.block.BlockPlaceEvent;
-	import org.bukkit.event.block.BlockSpreadEvent;
-	import org.bukkit.event.block.EntityBlockFormEvent;
+	import org.bukkit.craftbukkit.CraftWorld;
 	import org.bukkit.event.EventHandler;
 	import org.bukkit.event.EventPriority;
 	import org.bukkit.event.Listener;
 	import org.bukkit.event.world.ChunkPopulateEvent;
+	import org.bukkit.event.world.WorldInitEvent;
 	import org.bukkit.plugin.PluginManager;
+	import org.bukkit.World;
 //* IMPORTS: SPOUT
 	//* NOT NEEDED
 //* IMPORTS: OTHER
@@ -63,105 +59,43 @@ public class SphereListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void onBlockForm(BlockFormEvent event)
-	{
-		if (!event.getBlock().getWorld().getName().equalsIgnoreCase(SphereWorldConfig.world))
-			return;
-
-		Chunk chunk = event.getBlock().getChunk();
-
-		String chunkName = chunk.getX() + ":" + chunk.getZ();
-
-		if (this.plugin.chunkQueue.getChunkList().contains(chunkName))
-		{
-			event.setCancelled(true);
-		}
-	}
-
-	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void onBlockFromTo(BlockFromToEvent event)
-	{
-		if (!event.getBlock().getWorld().getName().equalsIgnoreCase(SphereWorldConfig.world))
-			return;
-
-		Chunk chunk = event.getBlock().getChunk();
-
-		String chunkName = chunk.getX() + ":" + chunk.getZ();
-
-		if (this.plugin.chunkQueue.getChunkList().contains(chunkName))
-		{
-			event.setCancelled(true);
-		}
-	}
-
-	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void onBlockPhysics(BlockPhysicsEvent event)
-	{
-		if (!event.getBlock().getWorld().getName().equalsIgnoreCase(SphereWorldConfig.world))
-			return;
-
-		Chunk chunk = event.getBlock().getChunk();
-
-		String chunkName = chunk.getX() + ":" + chunk.getZ();
-
-		if (this.plugin.chunkQueue.getChunkList().contains(chunkName))
-		{
-			event.setCancelled(true);
-		}
-	}
-
-	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void onBlockSpread(BlockSpreadEvent event)
-	{
-		if (!event.getBlock().getWorld().getName().equalsIgnoreCase(SphereWorldConfig.world))
-			return;
-
-		Chunk chunk = event.getSource().getChunk();
-
-		String chunkName = chunk.getX() + ":" + chunk.getZ();
-
-		if (this.plugin.chunkQueue.getChunkList().contains(chunkName))
-		{
-			event.setCancelled(true);
-		}
-	}
-
-	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onChunkPopulate(ChunkPopulateEvent event)
 	{
 		if (!event.getChunk().getWorld().getName().equalsIgnoreCase(SphereWorldConfig.world))
 			return;
 
 		Chunk chunk = event.getChunk();
+		World world = event.getChunk().getWorld();
+		net.minecraft.server.World defaultWorld = ((CraftWorld) world).getHandle();
 
 		for (int x = chunk.getX() - 1; x <= chunk.getX() + 1; x++)
 		{
 			for (int z = chunk.getZ() - 1; z <= chunk.getZ() + 1; z++)
 			{
+				if (!defaultWorld.isLoaded(x * 16, 1, z * 16))
+					continue;
+
+				Chunk currentChunk = world.getChunkAt(x, z);
 				String chunkName = x + ":" + z;
-				this.plugin.chunkQueue.getChunkList().add(chunkName);
+				this.plugin.chunkQueue.addChunk(chunkName);
 			}
 		}
 
 		if(this.plugin.sphereCleaner == null)
-			this.plugin.sphereCleaner = new SphereCleaner(this.plugin, event.getWorld(), this.plugin.chunkQueue);
+			this.plugin.sphereCleaner = new SphereCleaner(this.plugin, event.getWorld());
 
 		this.plugin.sphereCleaner.start();
 	}
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void onEntityBlockForm(EntityBlockFormEvent event)
+	public void onWorldInit(WorldInitEvent event)
 	{
-		if (!event.getBlock().getWorld().getName().equalsIgnoreCase(SphereWorldConfig.world))
+		if (!event.getWorld().getName().equalsIgnoreCase(SphereWorldConfig.world))
 			return;
 
-		Chunk chunk = event.getBlock().getChunk();
+		if(event.getWorld().getPopulators().contains(this.plugin.populator))
+			return;
 
-		String chunkName = chunk.getX() + ":" + chunk.getZ();
-
-		if (this.plugin.chunkQueue.getChunkList().contains(chunkName))
-		{
-			event.setCancelled(true);
-		}
+		event.getWorld().getPopulators().add(this.plugin.populator);
 	}
 }

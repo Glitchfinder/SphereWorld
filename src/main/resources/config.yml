@@ -9,8 +9,67 @@ SphereSpawnChance: 80
 WorldSeed: 12345
 SphereSeed: 12345
 GlassBlockID: 20
+AirBlockID: 0
 UseWorldFloor: false
 FloorUsesWater: false
 VerboseConsoleOutput: false
 WorldType: 'NORMAL'
-
+PreserveStrongholds: true
+PreserveVillages: true
+OreBubbles:
+  ShellBlockID: 1
+  Gold:
+    SpawnBubbles: true
+    MinimumRadius: 3
+    MaximumRadius: 4
+    SpawnChance: 35
+  Iron:
+    SpawnBubbles: true
+    MinimumRadius: 4
+    MaximumRadius: 5
+    SpawnChance: 80
+  Coal:
+    SpawnBubbles: true
+    MinimumRadius: 5
+    MaximumRadius: 7
+    SpawnChance: 80
+  Lapis:
+    SpawnBubbles: true
+    MinimumRadius: 5
+    MaximumRadius: 8
+    SpawnChance: 50
+  Diamond:
+    SpawnBubbles: true
+    MinimumRadius: 3
+    MaximumRadius: 4
+    SpawnChance: 30
+  Redstone:
+    SpawnBubbles: true
+    MinimumRadius: 4
+    MaximumRadius: 6
+    SpawnChance: 50
+  Emerald:
+    SpawnBubbles: false
+    MinimumRadius: 3
+    MaximumRadius: 4
+    SpawnChance: 25
+  Netherrack:
+    SpawnBubbles: true
+    MinimumRadius: 10
+    MaximumRadius: 16
+    SpawnChance: 45
+  SoulSand:
+    SpawnBubbles: true
+    MinimumRadius: 10
+    MaximumRadius: 16
+    SpawnChance: 45
+  Glowstone:
+    SpawnBubbles: true
+    MinimumRadius: 10
+    MaximumRadius: 16
+    SpawnChance: 50
+  EndStone:
+    SpawnBubbles: true
+    MinimumRadius: 10
+    MaximumRadius: 16
+    SpawnChance: 35

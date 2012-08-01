@@ -25,7 +25,11 @@
 package org.moresphereworld;
 
 //* IMPORTS: JDK/JRE
+	import java.io.IOException;
+	import java.io.ObjectInputStream;
+	import java.io.ObjectOutputStream;
 	import java.io.Serializable;
+	import java.lang.ClassNotFoundException;
 	import java.lang.String;
 	import java.util.ArrayList;
 	import java.util.Collections;
@@ -40,7 +44,6 @@ package org.moresphereworld;
 public class ChunkQueue implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-
 	private List<String> chunkNames;
 
 	public ChunkQueue()
@@ -49,12 +52,31 @@ public class ChunkQueue implements Serializable
 			chunkNames = Collections.synchronizedList(new ArrayList<String>());
 	}
 
-	public void addChunk(String chunkName)
+	private synchronized void writeObject(ObjectOutputStream out) throws IOException
+	{
+		out.defaultWriteObject();
+	}
+
+	private synchronized void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
+	{
+		
+		in.defaultReadObject();
+	}
+
+	public synchronized void addChunk(String chunkName)
 	{
 		if (chunkNames.contains(chunkName))
 			return;
 
 		chunkNames.add(chunkName);
+	}
+
+	public synchronized void removeChunk(String chunkName)
+	{
+		if (!chunkNames.contains(chunkName))
+			return;
+
+		chunkNames.remove(chunkName);
 	}
 
 	public List<String> getChunkList()
