@@ -22,7 +22,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.moresphereworld;
+package org.sphereworld;
 
 //* IMPORTS: JDK/JRE
 	import java.lang.String;
@@ -43,9 +43,9 @@ package org.moresphereworld;
 
 public class SphereListener implements Listener
 {
-	public MoreSphereWorldPlugin plugin;
+	public SphereWorld plugin;
 
-	public SphereListener(MoreSphereWorldPlugin instance)
+	public SphereListener(SphereWorld instance)
 	{
 		plugin = instance;
 	}
@@ -61,16 +61,17 @@ public class SphereListener implements Listener
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onChunkPopulate(ChunkPopulateEvent event)
 	{
-		if (!event.getChunk().getWorld().getName().equalsIgnoreCase(SphereWorldConfig.world))
+		String worldName = event.getChunk().getWorld().getName();
+		if (!worldName.equalsIgnoreCase(SphereWorldConfig.world))
 			return;
 
 		Chunk chunk = event.getChunk();
 		World world = event.getChunk().getWorld();
 		net.minecraft.server.World defaultWorld = ((CraftWorld) world).getHandle();
 
-		for (int x = chunk.getX() - 1; x <= chunk.getX() + 1; x++)
+		for (int x = chunk.getX() - 2; x <= chunk.getX() + 2; x++)
 		{
-			for (int z = chunk.getZ() - 1; z <= chunk.getZ() + 1; z++)
+			for (int z = chunk.getZ() - 2; z <= chunk.getZ() + 2; z++)
 			{
 				if (!defaultWorld.isLoaded(x * 16, 1, z * 16))
 					continue;
@@ -82,7 +83,7 @@ public class SphereListener implements Listener
 		}
 
 		if(this.plugin.sphereCleaner == null)
-			this.plugin.sphereCleaner = new SphereCleaner(this.plugin, event.getWorld());
+			this.plugin.sphereCleaner = new SphereCleaner(this.plugin, world);
 
 		this.plugin.sphereCleaner.start();
 	}

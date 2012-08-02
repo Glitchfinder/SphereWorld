@@ -22,7 +22,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.moresphereworld;
+package org.sphereworld;
 
 //* IMPORTS: JDK/JRE
 	import java.io.Serializable;

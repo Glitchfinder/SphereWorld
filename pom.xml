@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org</groupId>
-    <artifactId>MoreSphereWorld</artifactId>
+    <artifactId>SphereWorld</artifactId>
     <version>1.0</version>
-    <name>MoreSphereWorld</name>
+    <name>SphereWorld</name>
     <repositories>
         <repository>
             <id>bukkit-repo</id>
@@ -28,14 +28,14 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.2.4-R1.1-SNAPSHOT</version>
+            <version>1.2.5-R5.1-SNAPSHOT</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
 		<dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>craftbukkit</artifactId>
-            <version>1.2.4-R1.1-SNAPSHOT</version>
+            <version>1.2.5-R5.1-SNAPSHOT</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>

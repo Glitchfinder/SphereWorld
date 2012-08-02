@@ -22,10 +22,15 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.moresphereworld;
+package org.sphereworld;
 
 //* IMPORTS: JDK/JRE
+	import java.io.ObjectInputStream;
+	import java.io.ObjectOutputStream;
+	import java.io.Serializable;
+	import java.lang.String;
 	import java.util.ArrayList;
+	import java.util.Collections;
 	import java.util.List;
 //* IMPORTS: BUKKIT
 	//* NOT NEEDED
@@ -34,20 +39,46 @@ package org.moresphereworld;
 //* IMPORTS: OTHER
 	//* NOT NEEDED
 
-public class Spheres
+public class ChunkQueue implements Serializable
 {
-	private List<Sphere> sphereList = new ArrayList<Sphere>();
+	private static final long serialVersionUID = 1L;
+	private List<String> chunkNames;
 
-	public void addSphereToList(Sphere sphere)
+	public ChunkQueue()
 	{
-		if(sphereList.contains(sphere))
-			return;
-
-		sphereList.add(sphere);
+		if (chunkNames == null)
+			chunkNames = Collections.synchronizedList(new ArrayList<String>());
 	}
 
-	public List<Sphere> getSphereList()
+	private synchronized void writeObject(ObjectOutputStream out) throws Exception
 	{
-		return sphereList;
+		out.defaultWriteObject();
+	}
+
+	private synchronized void readObject(ObjectInputStream in) throws Exception
+	{
+		
+		in.defaultReadObject();
+	}
+
+	public synchronized void addChunk(String chunkName)
+	{
+		if (chunkNames.contains(chunkName))
+			return;
+
+		chunkNames.add(chunkName);
+	}
+
+	public synchronized void removeChunk(String chunkName)
+	{
+		if (!chunkNames.contains(chunkName))
+			return;
+
+		chunkNames.remove(chunkName);
+	}
+
+	public List<String> getChunkList()
+	{
+		return chunkNames;
 	}
 }

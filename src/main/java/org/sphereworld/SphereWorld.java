@@ -22,7 +22,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.moresphereworld;
+package org.sphereworld;
 
 //* IMPORTS: JDK/JRE
 	import java.io.File;
@@ -50,8 +50,9 @@ package org.moresphereworld;
 	import net.minecraft.server.BiomeBase;
 	import net.minecraft.server.ChunkCoordIntPair;
 	import net.minecraft.server.ChunkPosition;
+	import net.minecraft.server.WorldChunkManager;
 
-public class MoreSphereWorldPlugin extends JavaPlugin
+public class SphereWorld extends JavaPlugin
 {
 	public SphereListener blockListener;
 	public Logger log;
@@ -94,14 +95,15 @@ public class MoreSphereWorldPlugin extends JavaPlugin
 
 	public void onEnable()
 	{
-		populator = new SpherePopulator(this);
 		log = this.getLogger();
-		PluginManager pluginManager = getServer().getPluginManager();
 
 		FileConfiguration config = this.getConfig();
 		config.options().copyDefaults(true);
 		SphereWorldConfig.initialize(config);
 		this.saveConfig();
+
+		populator = new SpherePopulator(this);
+		PluginManager pluginManager = getServer().getPluginManager();
 
 		blockListener = new SphereListener(this);
 		blockListener.register();
@@ -157,23 +159,28 @@ public class MoreSphereWorldPlugin extends JavaPlugin
 			random.setSeed(SphereWorldConfig.worldSeed);
 			double d = random.nextDouble() * Math.PI * 2D;
 
+			net.minecraft.server.World defaultWorld = ((CraftWorld) world).getHandle();
+			ChunkPosition chunkposition = null;
+
 			for (int k = 0; k < strongholdCoords.length; k++)
 			{
 				double d1 = (1.25D + random.nextDouble()) * 32D;
-				int l = (int)Math.round(Math.cos(d) * d1);
-				int i1 = (int)Math.round(Math.sin(d) * d1);
+				int chunkX = (int)Math.round(Math.cos(d) * d1);
+				int chunkZ = (int)Math.round(Math.sin(d) * d1);
 				ArrayList arraylist = new ArrayList();
 				Collections.addAll(arraylist, strongholdBiomes);
-				net.minecraft.server.World defaultWorld = ((CraftWorld) world).getHandle();
-				ChunkPosition chunkposition = defaultWorld.getWorldChunkManager().a((l << 4) + 8, (i1 << 4) + 8, 112, arraylist, random);
+				int xPos = (chunkX << 4) + 8;
+				int zPos = (chunkZ << 4) + 8;
+				WorldChunkManager manager = defaultWorld.getWorldChunkManager();
+				chunkposition = manager.a(xPos, zPos, 112, arraylist, random);
 
 				if (chunkposition != null)
 				{
-					l = chunkposition.x >> 4;
-					i1 = chunkposition.z >> 4;
+					chunkX = chunkposition.x >> 4;
+					chunkZ = chunkposition.z >> 4;
 				}
 
-				strongholdCoords[k] = new ChunkCoordIntPair(l, i1);
+				strongholdCoords[k] = new ChunkCoordIntPair(chunkX, chunkZ);
 				d += (Math.PI * 2D) / (double)strongholdCoords.length;
 			}
 
@@ -196,9 +203,9 @@ public class MoreSphereWorldPlugin extends JavaPlugin
 		return false;
 	}
 
-	protected boolean canSpawnVillage(net.minecraft.server.World defaultWorld, int x, int z)
+	public boolean canSpawnVillage(int x, int z)
 	{
-		if(defaultWorld == null)
+		if(world == null)
 			return false;
 
 		byte byte0 = 32;
@@ -214,6 +221,7 @@ public class MoreSphereWorldPlugin extends JavaPlugin
 
 		int k = x / byte0;
 		int l = z / byte0;
+		net.minecraft.server.World defaultWorld = ((CraftWorld) world).getHandle();
 		Random random = defaultWorld.A(k, l, 0x9e7f70);
 		k *= byte0;
 		l *= byte0;
@@ -224,7 +232,8 @@ public class MoreSphereWorldPlugin extends JavaPlugin
 
 		if (x == k && z == l)
 		{
-			boolean flag = defaultWorld.getWorldChunkManager().a(x * 16 + 8, z * 16 + 8, 0, villageSpawnBiomes);
+			WorldChunkManager manager = defaultWorld.getWorldChunkManager();
+			boolean flag = manager.a(x * 16 + 8, z * 16 + 8, 0, villageSpawnBiomes);
 
 			if (flag)
 				return true;

@@ -22,17 +22,10 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.moresphereworld;
+package org.sphereworld;
 
 //* IMPORTS: JDK/JRE
-	import java.io.IOException;
-	import java.io.ObjectInputStream;
-	import java.io.ObjectOutputStream;
-	import java.io.Serializable;
-	import java.lang.ClassNotFoundException;
-	import java.lang.String;
 	import java.util.ArrayList;
-	import java.util.Collections;
 	import java.util.List;
 //* IMPORTS: BUKKIT
 	//* NOT NEEDED
@@ -41,46 +34,20 @@ package org.moresphereworld;
 //* IMPORTS: OTHER
 	//* NOT NEEDED
 
-public class ChunkQueue implements Serializable
+public class Spheres
 {
-	private static final long serialVersionUID = 1L;
-	private List<String> chunkNames;
+	private List<Sphere> sphereList = new ArrayList<Sphere>();
 
-	public ChunkQueue()
+	public void addSphereToList(Sphere sphere)
 	{
-		if (chunkNames == null)
-			chunkNames = Collections.synchronizedList(new ArrayList<String>());
-	}
-
-	private synchronized void writeObject(ObjectOutputStream out) throws IOException
-	{
-		out.defaultWriteObject();
-	}
-
-	private synchronized void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
-	{
-		
-		in.defaultReadObject();
-	}
-
-	public synchronized void addChunk(String chunkName)
-	{
-		if (chunkNames.contains(chunkName))
+		if(sphereList.contains(sphere))
 			return;
 
-		chunkNames.add(chunkName);
+		sphereList.add(sphere);
 	}
 
-	public synchronized void removeChunk(String chunkName)
+	public List<Sphere> getSphereList()
 	{
-		if (!chunkNames.contains(chunkName))
-			return;
-
-		chunkNames.remove(chunkName);
-	}
-
-	public List<String> getChunkList()
-	{
-		return chunkNames;
+		return sphereList;
 	}
 }
