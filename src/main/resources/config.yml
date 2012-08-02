@@ -49,7 +49,7 @@ OreBubbles:
     MaximumRadius: 6
     SpawnChance: 50
   Emerald:
-    SpawnBubbles: false
+    SpawnBubbles: true
     MinimumRadius: 3
     MaximumRadius: 4
     SpawnChance: 25

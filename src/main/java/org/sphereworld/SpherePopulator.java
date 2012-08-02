@@ -113,7 +113,7 @@ public class SpherePopulator extends BlockPopulator
 		}
 
 		Chunk defaultChunk = defaultWorld.getChunkAt(chunkX, chunkZ);
-		ChunkSection[] blockData = defaultChunk.h();
+		ChunkSection[] blockData = defaultChunk.i();
 
 		for(int z = 0; z < 16; ++z)
 		{
@@ -180,7 +180,7 @@ public class SpherePopulator extends BlockPopulator
 			if(village == null)
 				return;
 
-			if(village.distance(currentVector) <= 88)
+			if(village.distance(currentVector) <= 80)
 			{
 				Sphere newSphere = new Sphere();
 
@@ -312,9 +312,9 @@ public class SpherePopulator extends BlockPopulator
 
 		boolean villageFound = false;
 
-		for(int x = chunkX - 6; x <= chunkX + 6; x++)
+		for(int x = chunkX - 8; x <= chunkX + 8; x++)
 		{
-			for(int z = chunkZ - 6; z <= chunkZ + 6; z++)
+			for(int z = chunkZ - 8; z <= chunkZ + 8; z++)
 			{
 				if(!plugin.canSpawnVillage(x, z))
 					continue;
@@ -403,7 +403,7 @@ public class SpherePopulator extends BlockPopulator
 				ore = sphere.getOreId();
 			}
 
-			if(sphere.isProtectedStructure())
+			if(sphere.isProtectedStructure() && y >= 64)
 				protectedStructure = true;
 
 			if(glassType == 0 && (blockId == 9 || blockId == 11))
@@ -413,12 +413,12 @@ public class SpherePopulator extends BlockPopulator
 				edge.add(true);
 
 			if(glassType == 0 || y >= 64)
-				break;
+				continue;
 
 			if(distance <= sphere.getSize() - 1.1)
 			{
 				edge.add(false);
-				break;
+				continue;
 			}
 
 			if(sphere.getX() == blockX || sphere.getZ() == blockZ)

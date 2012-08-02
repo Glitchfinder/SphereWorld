@@ -226,7 +226,7 @@ public class SphereCleaner implements Runnable
 		}
 
 		Chunk defaultChunk = defaultWorld.getChunkAt(chunkX, chunkZ);
-		ChunkSection[] blockData = defaultChunk.h();
+		ChunkSection[] blockData = defaultChunk.i();
 
 		for(int z = 0; z < 16; ++z)
 		{
@@ -287,8 +287,7 @@ public class SphereCleaner implements Runnable
 	
 	private Random getRandom(int x, int z)
 	{
-		long seed = (x * 341873128712L + z * 132897987541L);
-		seed ^= config.sphereSeed;
+		long seed = (x * 341873128712L + z * 132897987541L) ^ config.sphereSeed;
 		return new Random(seed);
 	}
 
@@ -334,7 +333,7 @@ public class SphereCleaner implements Runnable
 			if(village == null)
 				continue;
 
-			if(village.distance(currentVector) <= 88)
+			if(village.distance(currentVector) <= 80)
 			{
 				Sphere newSphere = new Sphere();
 
@@ -466,9 +465,9 @@ public class SphereCleaner implements Runnable
 
 		boolean villageFound = false;
 
-		for(int x = chunkX - 6; x <= chunkX + 6; x++)
+		for(int x = chunkX - 8; x <= chunkX + 8; x++)
 		{
-			for(int z = chunkZ - 6; z <= chunkZ + 6; z++)
+			for(int z = chunkZ - 8; z <= chunkZ + 8; z++)
 			{
 				if(!plugin.canSpawnVillage(x, z))
 					continue;
@@ -557,9 +556,6 @@ public class SphereCleaner implements Runnable
 				ore = sphere.getOreId();
 			}
 
-			if(sphere.isProtectedStructure())
-				protectedStructure = true;
-
 			if(glassType == 0 && (blockId == 9 || blockId == 11))
 				edge.add(true);
 
@@ -567,12 +563,12 @@ public class SphereCleaner implements Runnable
 				edge.add(true);
 
 			if(glassType == 0 || (glassType == 2 && y >= 64))
-				break;
+				continue;
 
 			if(distance <= sphere.getSize() - 1.1)
 			{
 				edge.add(false);
-				break;
+				continue;
 			}
 
 			if(sphere.getX() == blockX || sphere.getZ() == blockZ)
@@ -586,7 +582,7 @@ public class SphereCleaner implements Runnable
 			blockData[sectionIndex].a(x, y & 15, z, air);
 			return true;
 		}
-		else if(!edge.isEmpty() && !edge.contains(false) && !protectedStructure)
+		else if(!edge.isEmpty() && !edge.contains(false))
 		{
 			if(shell != 0)
 			{

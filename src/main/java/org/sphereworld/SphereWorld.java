@@ -134,7 +134,7 @@ public class SphereWorld extends JavaPlugin
 		worldCreator = worldCreator.environment(SphereWorldConfig.worldEnvironment);
 		worldCreator = worldCreator.seed(SphereWorldConfig.worldSeed);
 
-		world = getServer().createWorld(worldCreator);
+		world = worldCreator.createWorld();
 
 		canSpawnStronghold(0, 0);
 
@@ -222,7 +222,7 @@ public class SphereWorld extends JavaPlugin
 		int k = x / byte0;
 		int l = z / byte0;
 		net.minecraft.server.World defaultWorld = ((CraftWorld) world).getHandle();
-		Random random = defaultWorld.A(k, l, 0x9e7f70);
+		Random random = defaultWorld.D(k, l, 0x9e7f70);
 		k *= byte0;
 		l *= byte0;
 		k += random.nextInt(byte0 - byte1);
