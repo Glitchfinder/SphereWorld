@@ -73,6 +73,10 @@ public class SphereWorld extends JavaPlugin
 	{
 		BiomeBase.PLAINS, BiomeBase.DESERT
 	});
+	private List templeBiomes = Arrays.asList(new BiomeBase[]
+	{
+		BiomeBase.DESERT, BiomeBase.DESERT_HILLS, BiomeBase.JUNGLE
+	});
 
 	private boolean calculatedStrongholds = false;
 
@@ -102,9 +106,9 @@ public class SphereWorld extends JavaPlugin
 		SphereWorldConfig.initialize(config);
 		this.saveConfig();
 
-		populator = new SpherePopulator(this);
 		PluginManager pluginManager = getServer().getPluginManager();
 
+		populator = new SpherePopulator(this);
 		blockListener = new SphereListener(this);
 		blockListener.register();
 
@@ -237,6 +241,44 @@ public class SphereWorld extends JavaPlugin
 
 			if (flag)
 				return true;
+		}
+
+		return false;
+	}
+
+	public boolean canSpawnTemple(int x, int z)
+	{
+		if(world == null)
+			return false;
+
+		int i = 32;
+		int j = 8;
+
+		int k = x;
+		int m = z;
+		if (x < 0) x -= i - 1;
+		if (z < 0) z -= i - 1;
+
+		int n = x / i;
+		int i1 = z / i;
+		net.minecraft.server.World defaultWorld = ((CraftWorld) world).getHandle();
+		Random localRandom = defaultWorld.D(n, i1, 14357617);
+		n *= i;
+		i1 *= i;
+		n += localRandom.nextInt(i - j);
+		i1 += localRandom.nextInt(i - j);
+		x = k;
+		z = m;
+
+		if ((x == n) && (z == i1))
+		{
+			WorldChunkManager manager = defaultWorld.getWorldChunkManager();
+			boolean bool = manager.a(x * 16 + 8, z * 16 + 8, 0, templeBiomes);
+
+			if (bool)
+			{
+				return true;
+			}
 		}
 
 		return false;

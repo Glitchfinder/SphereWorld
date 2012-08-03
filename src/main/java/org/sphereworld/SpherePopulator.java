@@ -74,6 +74,8 @@ public class SpherePopulator extends BlockPopulator
 
 		Vector stronghold = new Vector();
 		boolean strongholdFound = detStrongholds(stronghold, chunkX, chunkZ);
+		
+		protTemples(spheres, chunkX, chunkZ);
 
 		int baseX = (chunkX * 16) - ((chunkX * 16) % 20);
 		int baseZ = (chunkZ * 16) - ((chunkZ * 16) % 20);
@@ -192,7 +194,32 @@ public class SpherePopulator extends BlockPopulator
 				newSphere.setProtectedStructure(true);
 
 				spheres.addSphereToList(newSphere);
-				return;
+			}
+		}
+	}
+
+	private void protTemples(Spheres spheres, int chunkX, int chunkZ)
+	{
+		if(!config.preserveTemples || spheres == null)
+			return;
+
+		for(int x = chunkX - 8; x <= chunkX + 8; x++)
+		{
+			for(int z = chunkZ - 8; z <= chunkZ + 8; z++)
+			{
+				if(!plugin.canSpawnTemple(x, z))
+					continue;
+
+				Sphere newSphere = new Sphere();
+
+				newSphere.setSize(48);
+				newSphere.setWorld(config.world);
+				newSphere.setX((x * 16) + 8);
+				newSphere.setY(64);
+				newSphere.setZ((z * 16) + 8);
+				newSphere.setProtectedStructure(true);
+
+				spheres.addSphereToList(newSphere);
 			}
 		}
 	}

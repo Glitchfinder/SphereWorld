@@ -16,6 +16,7 @@ VerboseConsoleOutput: false
 WorldType: 'NORMAL'
 PreserveStrongholds: true
 PreserveVillages: true
+PreserveTemples: true
 OreBubbles:
   ShellBlockID: 1
   Gold:

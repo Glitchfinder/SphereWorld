@@ -63,6 +63,7 @@ public class SphereWorldConfig
 	public static ArrayList<Integer> oreBlockId	= new ArrayList<Integer>();
 	public static boolean preserveStrongholds;
 	public static boolean preserveVillages;
+	public static boolean preserveTemples;
 
 	public static void initialize(FileConfiguration config)
 	{
@@ -85,6 +86,7 @@ public class SphereWorldConfig
 		worldEnvironment	= World.Environment.valueOf(environmentName.toUpperCase());
 		preserveStrongholds	= config.getBoolean("PreserveStrongholds", true);
 		preserveVillages	= config.getBoolean("PreserveVillages", true);
+		preserveTemples		= config.getBoolean("PreserveTemples", true);
 		oreShellId		= config.getInt("OreBubbles.ShellBlockID", 1);
 		String ore 		= "OreBubbles.";
 		useOreBubbles.add(config.getBoolean(ore + "Gold.SpawnBubbles", true));
