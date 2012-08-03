@@ -176,8 +176,6 @@ public class SphereCleaner implements Runnable
 			return false;
 		}
 
-		final org.bukkit.Chunk chunk = world.getChunkAt(chunkX, chunkZ);
-
 		Spheres spheres = new Spheres();
 		spheres.getSphereList().clear();
 
@@ -303,7 +301,7 @@ public class SphereCleaner implements Runnable
 		int zPos = z + random.nextInt(20);
 		Vector currentVector = new Vector(xPos, 10, zPos);
 
-		if(stronghold.distance(currentVector) > 48)
+		if(stronghold.distance(currentVector) > 50)
 			return;
 
 		Sphere newSphere = new Sphere();
@@ -334,20 +332,20 @@ public class SphereCleaner implements Runnable
 			if(village == null)
 				continue;
 
-			if(village.distance(currentVector) <= 80)
-			{
-				Sphere newSphere = new Sphere();
+			if(village.distance(currentVector) > 72)
+				continue;
 
-				newSphere.setSize(48);
-				newSphere.setWorld(config.world);
-				newSphere.setX(xPos);
-				newSphere.setY(64);
-				newSphere.setZ(zPos);
-				newSphere.setProtectedStructure(true);
+			Sphere newSphere = new Sphere();
 
-				spheres.addSphereToList(newSphere);
-				return;
-			}
+			newSphere.setSize(48);
+			newSphere.setWorld(config.world);
+			newSphere.setX(xPos);
+			newSphere.setY(64);
+			newSphere.setZ(zPos);
+			newSphere.setProtectedStructure(true);
+
+			spheres.addSphereToList(newSphere);
+			return;
 		}
 	}
 
@@ -474,7 +472,7 @@ public class SphereCleaner implements Runnable
 			double xPow = Math.pow((xPos - chunkX), 2);
 			double zPow = Math.pow((zPos - chunkZ), 2);
 
-			if(Math.sqrt(xPow + zPow) > 5)
+			if(Math.sqrt(xPow + zPow) > 8)
 				continue;
 
 			stronghold.setX((xPos * 16) + 8);
