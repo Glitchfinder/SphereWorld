@@ -58,8 +58,6 @@ public class SphereCleaner implements Runnable
 	private boolean useGlowstone	= config.useGlowstone;
 	private boolean chunksRemaining = false;
 
-	private Vector vector = null;
-
 	public SphereCleaner(SphereWorld plugin, org.bukkit.World world)
 	{
 		this.plugin = plugin;

@@ -86,6 +86,11 @@ public class SphereListener implements Listener
 			this.plugin.sphereCleaner = new SphereCleaner(this.plugin, world);
 
 		this.plugin.sphereCleaner.start();
+
+		if(this.plugin.saveQueue == null)
+			this.plugin.saveQueue = new SaveQueue(this.plugin);
+		
+		this.plugin.saveQueue.start();
 	}
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)

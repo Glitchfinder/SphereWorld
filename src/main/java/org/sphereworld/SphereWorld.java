@@ -59,7 +59,8 @@ public class SphereWorld extends JavaPlugin
 	public SphereCleaner sphereCleaner;
 	public SpherePopulator populator;
 	public World world = null;
-	public ChunkQueue chunkQueue= new ChunkQueue();
+	public ChunkQueue chunkQueue = new ChunkQueue();
+	public SaveQueue saveQueue = new SaveQueue(this);
 	public ChunkCoordIntPair strongholdCoords[] = new ChunkCoordIntPair[3];
 	private BiomeBase strongholdBiomes[] = (new BiomeBase[]
 	{
@@ -150,6 +151,11 @@ public class SphereWorld extends JavaPlugin
 
 		log.info("Cleaning the chunks in " + SphereWorldConfig.world);
 		sphereCleaner.start();
+
+		if(saveQueue == null)
+			saveQueue = new SaveQueue(this);
+
+		saveQueue.start();
 	}
 
 	public boolean canSpawnStronghold(int x, int z)
