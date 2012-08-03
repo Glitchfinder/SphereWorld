@@ -29,7 +29,7 @@
 	import java.lang.Integer;
 	import java.util.ArrayList;
 //* IMPORTS: BUKKIT
-	import org.bukkit.configuration.file.FileConfiguration;
+	import org.bukkit.configuration.Configuration;
 	import org.bukkit.World;
 //* IMPORTS: SPOUT
 	//* NOT NEEDED
@@ -67,7 +67,7 @@ public class SphereWorldConfig
 	public static boolean preserveVillages;
 	public static boolean preserveTemples;
 
-	public static void initialize(FileConfiguration config)
+	public static void initialize(Configuration config)
 	{
 		world			= config.getString("WorldName", "Spheres");
 		minHeight		= config.getInt("MinimumHeight", 34);

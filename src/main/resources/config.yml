@@ -1,30 +1,60 @@
+# The name of the world this plugin generates.
 WorldName: 'Spheres'
+# Minimum and maximum elevations to spawn spheres at.
 MinimumHeight: 34
 MaximumHeight: 96
+# Minimum and maximum possible radii for the spheres.
+# This should roughly equate to radius * 2 for the size.
 MinimumRadius: 8
 MaximumRadius: 32
+# Type of glass bubble to spawn.
+# 0: No glass
+# 1: A full sphere
+# 2: A half sphere (glass only below sea level)
 GlassType: 1
+# If enabled, will spawn the sphere with two glowstone "rings"
+# in the glass, along a vertical axis.
 UseGlowstone: false
+# Percent chance to spawn a sphere.
 SphereSpawnChance: 80
+# Seed used to generate the world the spheres are in.
 WorldSeed: 12345
+# Seed used to determine the location, size, etc. of
+# all spheres and ore spheres.
 SphereSeed: 12345
+# The block ids to use for glass (the bubble)
+# and air (the material surrounding the bubble).
 GlassBlockID: 20
 AirBlockID: 0
+# If enabled, will spawn a bedrock floor at y = 0.
 UseWorldFloor: false
+# If enabled, and if UseWorldFloor is enabled, will spawn
+# a layer of water at y = 1.
 FloorUsesWater: false
+# Verbose debug output. Will be removed once the plugin is stable
+# and functional.
 VerboseConsoleOutput: false
+# World generation type. Currently, it will allow for
+# the normal world, the nether, and the end.
 WorldType: 'NORMAL'
+# Protection settings. If enabled, spheres will be generated to prevent
+# each feature from being destroyed.
 PreserveStrongholds: true
 PreserveVillages: true
 PreserveTemples: true
+
+# Ore bubble settings. Similar to the normal settings, only per ore.
 OreBubbles:
   Gold:
+    # Whether or not to spawn this type of ore.
     SpawnBubbles: true
     MinimumHeight: 34
     MaximumHeight: 96
     MinimumRadius: 3
     MaximumRadius: 4
     SpawnChance: 35
+    # The block ID used as the bubble's "shell" in a similar fashion to
+    # the glass used by the default plugin.
     ShellBlockID: 1
   Iron:
     SpawnBubbles: true

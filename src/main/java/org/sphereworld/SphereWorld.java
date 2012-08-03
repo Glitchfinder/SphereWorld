@@ -28,9 +28,14 @@ package org.sphereworld;
 	import java.io.File;
 	import java.io.FileInputStream;
 	import java.io.FileOutputStream;
+	import java.io.InputStream;
 	import java.io.ObjectInputStream;
 	import java.io.ObjectOutputStream;
+	import java.io.OutputStream;
 	import java.lang.Math;
+	import java.net.URL;
+	import java.net.URLDecoder;
+	import java.nio.channels.FileChannel;
 	import java.util.ArrayList;
 	import java.util.Arrays;
 	import java.util.Collections;
@@ -39,9 +44,9 @@ package org.sphereworld;
 	import java.util.Random;
 //* IMPORTS: BUKKIT
 	import org.bukkit.configuration.file.FileConfiguration;
+	import org.bukkit.configuration.file.YamlConfiguration;
 	import org.bukkit.craftbukkit.CraftWorld;
 	import org.bukkit.plugin.java.JavaPlugin;
-	import org.bukkit.plugin.PluginManager;
 	import org.bukkit.World;
 	import org.bukkit.WorldCreator;
 //* IMPORTS: SPOUT
@@ -86,62 +91,21 @@ public class SphereWorld extends JavaPlugin
 		if(sphereCleaner != null)
 			sphereCleaner.stop();
 
-		try {
-			File chunkQueueFile = new File(getDataFolder(), "ChunkQueue.bin");
-			FileOutputStream fos = new FileOutputStream(chunkQueueFile);
-			ObjectOutputStream out = new ObjectOutputStream(fos);
-			out.writeObject(chunkQueue);
-			out.close();
-			log.info("Successfully saved the chunk cleaning queue.");
-		} catch (Exception e) {
-			log.info("Unable to save the chunk cleaning queue. It may be corrupt.");
-		}
+		saveChunkQueue();
 	}
 
 	public void onEnable()
 	{
 		log = this.getLogger();
 
-		FileConfiguration config = this.getConfig();
-		config.options().copyDefaults(true);
-		SphereWorldConfig.initialize(config);
-		this.saveConfig();
-
-		PluginManager pluginManager = getServer().getPluginManager();
+		readConfig();
+		loadChunkQueue();
 
 		populator = new SpherePopulator(this);
 		blockListener = new SphereListener(this);
 		blockListener.register();
 
-		try
-		{
-			File chunkQueueFile = new File(getDataFolder(), "ChunkQueue.bin");
-			FileInputStream fis = new FileInputStream(chunkQueueFile);
-			ObjectInputStream in = new ObjectInputStream(fis);
-			chunkQueue = (ChunkQueue) in.readObject();
-			in.close();
-			log.info("Successfully loaded the chunk cleaning queue.");
-		}
-		catch(Exception e)
-		{
-			log.info("Unable to read the chunk cleaning queue. It may be corrupt.");
-		}
-
-		try {
-			File chunkQueueFile = new File(getDataFolder(), "ChunkQueue.bin");
-			FileOutputStream fos = new FileOutputStream(chunkQueueFile);
-			ObjectOutputStream out = new ObjectOutputStream(fos);
-			out.writeObject(chunkQueue);
-			out.close();
-		} catch (Exception e) {}
-
-		WorldCreator worldCreator = new WorldCreator(SphereWorldConfig.world);
-		worldCreator = worldCreator.environment(SphereWorldConfig.worldEnvironment);
-		worldCreator = worldCreator.seed(SphereWorldConfig.worldSeed);
-
-		world = worldCreator.createWorld();
-
-		canSpawnStronghold(0, 0);
+		createWorld();
 
 		if(chunkQueue.getChunkList().isEmpty())
 			return;
@@ -288,5 +252,109 @@ public class SphereWorld extends JavaPlugin
 		}
 
 		return false;
+	}
+
+	public void readConfig()
+	{
+		copyConfig();
+		File configFile = new File(getDataFolder(), "config.yml");
+		
+		try{
+			if(configFile.exists())
+			{
+				InputStream stream = new FileInputStream(configFile);
+				YamlConfiguration config;
+				config = YamlConfiguration.loadConfiguration(stream);
+				SphereWorldConfig.initialize(config);
+			}
+			else
+			{
+				FileConfiguration config = getConfig();
+				SphereWorldConfig.initialize(config);
+			}
+		}
+		catch(Exception e)
+		{
+			FileConfiguration config = getConfig();
+			SphereWorldConfig.initialize(config);
+		}
+	}
+
+	public boolean copyConfig()
+	{
+		File sourceFile;
+		File destinationFile;
+		try
+		{
+			destinationFile = new File(getDataFolder(), "config.yml");
+
+			if(destinationFile.exists())
+				return false;
+
+			destinationFile.createNewFile();
+
+			InputStream inputStream = getClass().getResourceAsStream("/config.yml");
+			OutputStream out = new FileOutputStream(destinationFile);
+			byte buffer[] = new byte[1024];
+			int length;
+
+			while((length = inputStream.read(buffer)) > 0)
+				out.write(buffer, 0, length);
+
+			out.close();
+			inputStream.close();
+			return true;
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
+	}
+
+	public void loadChunkQueue()
+	{
+		File chunkQueueFile;
+
+		try
+		{
+			chunkQueueFile = new File(getDataFolder(), "ChunkQueue.bin");
+
+			if(!chunkQueueFile.exists())
+				return;
+
+			FileInputStream fis = new FileInputStream(chunkQueueFile);
+			ObjectInputStream in = new ObjectInputStream(fis);
+			chunkQueue = (ChunkQueue) in.readObject();
+			in.close();
+			log.info("Successfully loaded the chunk cleaning queue.");
+		}
+		catch(Exception e)
+		{
+			log.info("Unable to read the chunk cleaning queue. It may be corrupt.");
+		}
+
+		saveChunkQueue();
+	}
+
+	public void saveChunkQueue()
+	{
+		try {
+			File chunkQueueFile = new File(getDataFolder(), "ChunkQueue.bin");
+			FileOutputStream fos = new FileOutputStream(chunkQueueFile);
+			ObjectOutputStream out = new ObjectOutputStream(fos);
+			out.writeObject(chunkQueue);
+			out.close();
+			log.info("Successfully saved the chunk cleaning queue.");
+		} catch (Exception e) {
+			log.info("Unable to save the chunk cleaning queue. It may be corrupt.");
+		}
+	}
+
+	public void createWorld()
+	{
+		WorldCreator worldCreator = new WorldCreator(SphereWorldConfig.world);
+		worldCreator = worldCreator.environment(SphereWorldConfig.worldEnvironment);
+		worldCreator = worldCreator.seed(SphereWorldConfig.worldSeed);
+		this.world = worldCreator.createWorld();
 	}
 }
