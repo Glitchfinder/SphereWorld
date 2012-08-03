@@ -263,7 +263,7 @@ public class SpherePopulator extends BlockPopulator
 		if(random.nextInt(100) > 90 || random.nextInt(200) > 15)
 			return;
 
-		int ore = random.nextInt(11);
+		int ore = random.nextInt(15);
 
 		try
 		{
@@ -273,8 +273,9 @@ public class SpherePopulator extends BlockPopulator
 			if(random.nextInt(100) > config.oreSpawnChance.get(ore))
 				return;
 
-			int baseHeight = config.maxHeight - config.minHeight;
-			int height = random.nextInt(baseHeight) + config.minHeight;
+			int baseHeight = config.maxOreHeight.get(ore);
+			baseHeight -= config.minOreHeight.get(ore);
+			int height = random.nextInt(baseHeight) + config.minOreHeight.get(ore);
 
 			int baseRadius = config.maxOreRadius.get(ore);
 			baseRadius -= config.minOreRadius.get(ore);
@@ -291,7 +292,7 @@ public class SpherePopulator extends BlockPopulator
 			newSphere.setZ(z + random.nextInt(20));
 			newSphere.setOreSphere(true);
 			newSphere.setOreId(oreId);
-			newSphere.setOreShellId(config.oreShellId);
+			newSphere.setOreShellId(config.oreShellId.get(ore));
 
 			spheres.addSphereToList(newSphere);
 		}
