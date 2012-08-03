@@ -263,7 +263,7 @@ public class SpherePopulator extends BlockPopulator
 		if(random.nextInt(100) > 90 || random.nextInt(200) > 15)
 			return;
 
-		int ore = random.nextInt(15);
+		int ore = random.nextInt(config.useOreBubbles.size());
 
 		try
 		{
@@ -281,8 +281,6 @@ public class SpherePopulator extends BlockPopulator
 			baseRadius -= config.minOreRadius.get(ore);
 			int radius = random.nextInt(baseRadius) + config.minOreRadius.get(ore);
 
-			int oreId = config.oreBlockId.get(ore);
-
 			Sphere newSphere = new Sphere();
 
 			newSphere.setSize(radius);
@@ -291,7 +289,7 @@ public class SpherePopulator extends BlockPopulator
 			newSphere.setY(height);
 			newSphere.setZ(z + random.nextInt(20));
 			newSphere.setOreSphere(true);
-			newSphere.setOreId(oreId);
+			newSphere.setOreId(config.oreBlockId.get(ore));
 			newSphere.setOreShellId(config.oreShellId.get(ore));
 
 			spheres.addSphereToList(newSphere);

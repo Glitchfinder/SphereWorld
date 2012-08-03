@@ -43,99 +43,32 @@ PreserveStrongholds: true
 PreserveVillages: true
 PreserveTemples: true
 
-# Ore bubble settings. Similar to the normal settings, only per ore.
-OreBubbles:
-  Gold:
-    # Whether or not to spawn this type of ore.
+# Resource bubble settings. Similar to the normal settings, only per resource.
+# To add new type of resource bubbles, just copy an existing resource and
+# modify the name and settings.
+Meteors:
+  Water:
+    # Whether or not to spawn this type of bubble.
     SpawnBubbles: true
     MinimumHeight: 34
     MaximumHeight: 96
-    MinimumRadius: 3
-    MaximumRadius: 4
-    SpawnChance: 35
-    # The block ID used as the bubble's "shell" in a similar fashion to
+    MinimumRadius: 8
+    MaximumRadius: 12
+    SpawnChance: 40
+    # The block ID used as the bubble's "shell", in a similar fashion to
     # the glass used by the default plugin.
     ShellBlockID: 1
-  Iron:
+    # The block ID used as the bubble's interior.
+    CoreBlockID: 9
+  Lava:
     SpawnBubbles: true
     MinimumHeight: 34
     MaximumHeight: 96
-    MinimumRadius: 4
-    MaximumRadius: 5
-    SpawnChance: 80
-    ShellBlockID: 1
-  Coal:
-    SpawnBubbles: true
-    MinimumHeight: 34
-    MaximumHeight: 96
-    MinimumRadius: 5
-    MaximumRadius: 7
-    SpawnChance: 80
-    ShellBlockID: 1
-  Lapis:
-    SpawnBubbles: true
-    MinimumHeight: 34
-    MaximumHeight: 96
-    MinimumRadius: 5
-    MaximumRadius: 8
-    SpawnChance: 50
-    ShellBlockID: 1
-  Diamond:
-    SpawnBubbles: true
-    MinimumHeight: 34
-    MaximumHeight: 96
-    MinimumRadius: 3
-    MaximumRadius: 4
-    SpawnChance: 30
-    ShellBlockID: 1
-  Redstone:
-    SpawnBubbles: true
-    MinimumHeight: 34
-    MaximumHeight: 96
-    MinimumRadius: 4
-    MaximumRadius: 6
-    SpawnChance: 50
-    ShellBlockID: 1
-  Emerald:
-    SpawnBubbles: true
-    MinimumHeight: 34
-    MaximumHeight: 96
-    MinimumRadius: 3
-    MaximumRadius: 4
-    SpawnChance: 25
-    ShellBlockID: 1
-  Netherrack:
-    SpawnBubbles: true
-    MinimumHeight: 34
-    MaximumHeight: 96
-    MinimumRadius: 10
-    MaximumRadius: 16
-    SpawnChance: 45
-    ShellBlockID: 1
-  SoulSand:
-    SpawnBubbles: true
-    MinimumHeight: 34
-    MaximumHeight: 96
-    MinimumRadius: 10
-    MaximumRadius: 16
-    SpawnChance: 45
-    ShellBlockID: 1
-  Glowstone:
-    SpawnBubbles: true
-    MinimumHeight: 34
-    MaximumHeight: 96
-    MinimumRadius: 10
-    MaximumRadius: 16
-    SpawnChance: 50
-    ShellBlockID: 1
-  EndStone:
-    SpawnBubbles: true
-    MinimumHeight: 34
-    MaximumHeight: 96
-    MinimumRadius: 10
-    MaximumRadius: 16
+    MinimumRadius: 8
+    MaximumRadius: 12
     SpawnChance: 35
     ShellBlockID: 1
+    CoreBlockID: 11
   Sand:
     SpawnBubbles: true
     MinimumHeight: 34
@@ -144,14 +77,43 @@ OreBubbles:
     MaximumRadius: 12
     SpawnChance: 40
     ShellBlockID: 1
-  Clay:
+    CoreBlockID: 12
+  Gold:
     SpawnBubbles: true
     MinimumHeight: 34
     MaximumHeight: 96
-    MinimumRadius: 8
-    MaximumRadius: 12
-    SpawnChance: 45
+    MinimumRadius: 3
+    MaximumRadius: 4
+    SpawnChance: 35
     ShellBlockID: 1
+    CoreBlockID: 14
+  Iron:
+    SpawnBubbles: true
+    MinimumHeight: 34
+    MaximumHeight: 96
+    MinimumRadius: 4
+    MaximumRadius: 5
+    SpawnChance: 80
+    ShellBlockID: 1
+    CoreBlockID: 15
+  Coal:
+    SpawnBubbles: true
+    MinimumHeight: 34
+    MaximumHeight: 96
+    MinimumRadius: 5
+    MaximumRadius: 7
+    SpawnChance: 80
+    ShellBlockID: 1
+    CoreBlockID: 16
+  Lapis:
+    SpawnBubbles: true
+    MinimumHeight: 34
+    MaximumHeight: 96
+    MinimumRadius: 5
+    MaximumRadius: 8
+    SpawnChance: 50
+    ShellBlockID: 1
+    CoreBlockID: 21
   MossStone:
     SpawnBubbles: true
     MinimumHeight: 34
@@ -160,6 +122,7 @@ OreBubbles:
     MaximumRadius: 10
     SpawnChance: 40
     ShellBlockID: 1
+    CoreBlockID: 48
   Obsidian:
     SpawnBubbles: true
     MinimumHeight: 34
@@ -168,3 +131,76 @@ OreBubbles:
     MaximumRadius: 10
     SpawnChance: 35
     ShellBlockID: 1
+    CoreBlockID: 49
+  Diamond:
+    SpawnBubbles: true
+    MinimumHeight: 34
+    MaximumHeight: 96
+    MinimumRadius: 3
+    MaximumRadius: 4
+    SpawnChance: 30
+    ShellBlockID: 1
+    CoreBlockID: 56
+  Redstone:
+    SpawnBubbles: true
+    MinimumHeight: 34
+    MaximumHeight: 96
+    MinimumRadius: 4
+    MaximumRadius: 6
+    SpawnChance: 50
+    ShellBlockID: 1
+    CoreBlockID: 73
+  Clay:
+    SpawnBubbles: true
+    MinimumHeight: 34
+    MaximumHeight: 96
+    MinimumRadius: 8
+    MaximumRadius: 12
+    SpawnChance: 45
+    ShellBlockID: 1
+    CoreBlockID: 82
+  Netherrack:
+    SpawnBubbles: true
+    MinimumHeight: 34
+    MaximumHeight: 96
+    MinimumRadius: 10
+    MaximumRadius: 16
+    SpawnChance: 45
+    ShellBlockID: 1
+    CoreBlockID: 87
+  SoulSand:
+    SpawnBubbles: true
+    MinimumHeight: 34
+    MaximumHeight: 96
+    MinimumRadius: 10
+    MaximumRadius: 16
+    SpawnChance: 45
+    ShellBlockID: 1
+    CoreBlockID: 88
+  Glowstone:
+    SpawnBubbles: true
+    MinimumHeight: 34
+    MaximumHeight: 96
+    MinimumRadius: 10
+    MaximumRadius: 16
+    SpawnChance: 50
+    ShellBlockID: 1
+    CoreBlockID: 89
+  EndStone:
+    SpawnBubbles: true
+    MinimumHeight: 34
+    MaximumHeight: 96
+    MinimumRadius: 10
+    MaximumRadius: 16
+    SpawnChance: 35
+    ShellBlockID: 1
+    CoreBlockID: 121
+  Emerald:
+    SpawnBubbles: true
+    MinimumHeight: 34
+    MaximumHeight: 96
+    MinimumRadius: 3
+    MaximumRadius: 4
+    SpawnChance: 25
+    ShellBlockID: 1
+    CoreBlockID: 129
