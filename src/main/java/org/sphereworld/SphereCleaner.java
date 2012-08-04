@@ -356,7 +356,7 @@ public class SphereCleaner implements Runnable
 		{
 			for(int z = chunkZ - 8; z <= chunkZ + 8; z++)
 			{
-				if(!plugin.canSpawnTemple(x, z))
+				if(!plugin.canSpawnTemple(defaultWorld, x, z))
 					continue;
 
 				Sphere newSphere = new Sphere();
@@ -455,7 +455,7 @@ public class SphereCleaner implements Runnable
 		}
 
 		if(plugin.strongholdCoords[0] == null && config.preserveStrongholds)
-			plugin.canSpawnStronghold(0, 0);
+			plugin.canSpawnStronghold(defaultWorld, 0, 0);
 
 		for(int i = 0; i < plugin.strongholdCoords.length; i++)
 		{
@@ -491,7 +491,7 @@ public class SphereCleaner implements Runnable
 		{
 			for(int z = chunkZ - 8; z <= chunkZ + 8; z++)
 			{
-				if(!plugin.canSpawnVillage(x, z))
+				if(!plugin.canSpawnVillage(defaultWorld, x, z))
 					continue;
 
 				villageFound = true;

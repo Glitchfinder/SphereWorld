@@ -122,9 +122,9 @@ public class SphereWorld extends JavaPlugin
 		saveQueue.start();
 	}
 
-	public boolean canSpawnStronghold(int x, int z)
+	public boolean canSpawnStronghold(net.minecraft.server.World defaultWorld, int x, int z)
 	{
-		if(world == null)
+		if(defaultWorld == null)
 			return false;
 
 		if(!calculatedStrongholds)
@@ -133,7 +133,6 @@ public class SphereWorld extends JavaPlugin
 			random.setSeed(SphereWorldConfig.worldSeed);
 			double d = random.nextDouble() * Math.PI * 2D;
 
-			net.minecraft.server.World defaultWorld = ((CraftWorld) world).getHandle();
 			ChunkPosition chunkposition = null;
 
 			for (int k = 0; k < strongholdCoords.length; k++)
@@ -177,9 +176,9 @@ public class SphereWorld extends JavaPlugin
 		return false;
 	}
 
-	public boolean canSpawnVillage(int x, int z)
+	public boolean canSpawnVillage(net.minecraft.server.World defaultWorld, int x, int z)
 	{
-		if(world == null)
+		if(defaultWorld == null)
 			return false;
 
 		byte byte0 = 32;
@@ -195,7 +194,6 @@ public class SphereWorld extends JavaPlugin
 
 		int k = x / byte0;
 		int l = z / byte0;
-		net.minecraft.server.World defaultWorld = ((CraftWorld) world).getHandle();
 		Random random = defaultWorld.D(k, l, 0x9e7f70);
 		k *= byte0;
 		l *= byte0;
@@ -216,9 +214,9 @@ public class SphereWorld extends JavaPlugin
 		return false;
 	}
 
-	public boolean canSpawnTemple(int x, int z)
+	public boolean canSpawnTemple(net.minecraft.server.World defaultWorld, int x, int z)
 	{
-		if(world == null)
+		if(defaultWorld == null)
 			return false;
 
 		int i = 32;
@@ -231,7 +229,6 @@ public class SphereWorld extends JavaPlugin
 
 		int n = x / i;
 		int i1 = z / i;
-		net.minecraft.server.World defaultWorld = ((CraftWorld) world).getHandle();
 		Random localRandom = defaultWorld.D(n, i1, 14357617);
 		n *= i;
 		i1 *= i;
